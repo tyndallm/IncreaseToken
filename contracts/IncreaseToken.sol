@@ -1,8 +1,8 @@
 pragma solidity ^0.5.0;
 
-import "node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "node_modules/@openzeppelin/contracts/math/SafeMath.sol";
-import "node_modules/@openzeppelin/contracts/ownership/Ownable.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../node_modules/@openzeppelin/contracts/math/SafeMath.sol";
+import "../node_modules/@openzeppelin/contracts/ownership/Ownable.sol";
 
 /**
  * ERC20 Increase Token
@@ -32,12 +32,12 @@ contract IncreaseToken is IERC20, Ownable {
         totalAccounts = totalAccounts++;
     }
 
-    function balanceOf(address account) public {
+    function balanceOf(address account) public view returns (uint) {
         // todo does this account for decimals properly - 1e18?
         return daysIncreasing(account) + totalReceived[account] - totalSpent[account];
     }
 
-    function totalSupply() public returns (uint balance) {
+    function totalSupply() public view returns (uint balance) {
         for (uint i = 0; i < totalAccounts; i++) {
             balance += balanceOf(accounts[i]);
         }
@@ -52,8 +52,9 @@ contract IncreaseToken is IERC20, Ownable {
         return numDaysForTimestamp(increaseAccount[account]);
     }
 
-    function numDaysForTimestamp(uint timestamp) internal returns (uint) {
-        uint delta = timestamp.sub(startUnixTimestamp);
+    function numDaysForTimestamp(uint accountStart) internal view returns (uint) {
+        // todo is using block.timestamp safe for this?
+        uint delta = block.timestamp.sub(accountStart);
         return delta.div(DAY_LENTH_IN_SECONDS);
     }
 
@@ -91,7 +92,7 @@ contract IncreaseToken is IERC20, Ownable {
         require(spender != address(0), "ERC20 approve to zero address");
         
         _allowances[owner][spender] = amount;
-        emit Approval(owner, sender, amount);
+        emit Approval(owner, spender, amount);
     }
 
 }
