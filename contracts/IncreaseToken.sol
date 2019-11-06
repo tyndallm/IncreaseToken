@@ -59,18 +59,18 @@ contract IncreaseToken is IERC20, Ownable {
 
     function transfer(address recipient, uint amount) public returns (bool) {
         // todo check if recipient is in accounts, otherwise set recipient in accounts and increment accounts
-        _transfer(msg.sender, recipient, amount);
+        _transfer(_msgSender(), recipient, amount);
         return true;
     }
 
     function transferFrom(address sender, address recipient, uint amount) public returns (bool) {
         _transfer(sender, recipient, amount);
-        _approve(sender, msg.sender, _allowances[sender][msg.sender].sub(amount, "ERC20 transfer amount exceeds allowance"));
+        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "ERC20 transfer amount exceeds allowance"));
         return true;
     }
 
     function approve(address spender, uint amount) public returns (bool) {
-        _approve(msg.sender, spender, amount);
+        _approve(_msgSender(), spender, amount);
         return true;
     }
 
