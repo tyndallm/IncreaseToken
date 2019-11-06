@@ -1,0 +1,17 @@
+{
+  "name": "increasing-supply-token",
+  "version": "0.1.0",
+  "description": "increasing supply erc20",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "author": "Matt Tyndall",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.4.0"
+  }
+}
